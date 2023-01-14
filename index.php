@@ -1,119 +1,45 @@
-<?php
-if (isset($_POST["submit"])) {
-	$name = $_POST['name'];
-	$email = $_POST['email'];
-	$message = $_POST['message'];
-	$human = intval($_POST['human']);
-	$from = 'Demo Contact Form';
-	$to = 'example@domain.com';
-	$subject = 'Message from Contact Demo ';
-
-	$body = "From: $name\n E-Mail: $email\n Message:\n $message";
-
-	// Check if name has been entered
-	if (!$_POST['name']) {
-		$errName = 'Please enter your name';
-	}
-
-	// Check if email has been entered and is valid
-	if (!$_POST['email'] || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-		$errEmail = 'Please enter a valid email address';
-	}
-
-	//Check if message has been entered
-	if (!$_POST['message']) {
-		$errMessage = 'Please enter your message';
-	}
-	//Check if simple anti-bot test is correct
-	if ($human !== 5) {
-		$errHuman = 'Your anti-spam is incorrect';
-	}
-
-	// If there are no errors, send the email
-	if (!$errName && !$errEmail && !$errMessage && !$errHuman) {
-		if (mail($to, $subject, $body, $from)) {
-			$result = '<div class="alert alert-success">Thank You! I will be in touch</div>';
-		} else {
-			$result = '<div class="alert alert-danger">Sorry there was an error sending your message. Please try again later.</div>';
-		}
-	}
-}
-
-// Uncomment below code if you want to use SMTP to send emails. You need to enter your correct SMTP credentials
-/*
-  $contact->smtp = array(
-    'host' => 'example.com',
-    'username' => 'example',
-    'password' => 'pass',
-    'port' => '587'
-  );
-  */
-
-?>
+<?php include 'sendemail.php'; ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Contact Form</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+  </head>
+  <body>
 
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Bootstrap contact form with PHP example by BootstrapBay.com.">
-	<meta name="author" content="BootstrapBay.com">
-	<title>Bootstrap Contact Form With PHP Example</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-</head>
+    <!--alert messages start-->
+    <?php echo $alert; ?>
+    <!--alert messages end-->
 
-<body>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<h1 class="page-header text-center">Contact Form Example</h1>
-				<form class="form-horizontal" role="form" method="post" action="index.php">
-					<div class="form-group">
-						<label for="name" class="col-sm-2 control-label">Name</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" id="name" name="name" placeholder="First & Last Name" value="<?php echo htmlspecialchars($_POST['name']); ?>">
-							<?php echo "<p class='text-danger'>$errName</p>"; ?>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="email" class="col-sm-2 control-label">Email</label>
-						<div class="col-sm-10">
-							<input type="email" class="form-control" id="email" name="email" placeholder="example@domain.com" value="<?php echo htmlspecialchars($_POST['email']); ?>">
-							<?php echo "<p class='text-danger'>$errEmail</p>"; ?>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="message" class="col-sm-2 control-label">Message</label>
-						<div class="col-sm-10">
-							<textarea class="form-control" rows="4" name="message"><?php echo htmlspecialchars($_POST['message']); ?></textarea>
-							<?php echo "<p class='text-danger'>$errMessage</p>"; ?>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="human" class="col-sm-2 control-label">2 + 3 = ?</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" id="human" name="human" placeholder="Your Answer">
-							<?php echo "<p class='text-danger'>$errHuman</p>"; ?>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-10 col-sm-offset-2">
-							<input id="submit" name="submit" type="submit" value="Send" class="btn btn-primary">
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-10 col-sm-offset-2">
-							<?php echo $result; ?>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-</body>
+    <!--contact section start-->
+    <div class="contact-section">
+      <div class="contact-info">
+        <div><i class="fas fa-map-marker-alt"></i>Address, City, Country</div>
+        <div><i class="fas fa-envelope"></i>contact@email.com</div>
+        <div><i class="fas fa-phone"></i>+00 0000 000 000</div>
+        <div><i class="fas fa-clock"></i>Mon - Fri 8:00 AM to 5:00 PM</div>
+      </div>
+      <div class="contact-form">
+        <h2>Contact Us</h2>
+        <form class="contact" action="" method="post">
+          <input type="text" name="name" class="text-box" placeholder="Your Name" required>
+          <input type="email" name="email" class="text-box" placeholder="Your Email" required>
+          <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+          <input type="submit" name="submit" class="send-btn" value="Send">
+        </form>
+      </div>
+    </div>
+    <!--contact section end-->
 
+    <script type="text/javascript">
+    if(window.history.replaceState){
+      window.history.replaceState(null, null, window.location.href);
+    }
+    </script>
+
+  </body>
 </html>
